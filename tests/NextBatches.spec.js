@@ -1,6 +1,6 @@
 import{test} from '@playwright/test';
 
-import NextBatchesPage from '../../Pages/NextBatchesPage';
+import NextBatchesPage from '../Pages/NextBatchesPage';
 
 test("Validate nextbatches", async({page})=>{
 
