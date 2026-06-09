@@ -9,6 +9,7 @@ export default class UpcomingBatch
      this.UpcomingBatchlink = page.getByRole('link', {name: 'Upcoming Batches'}).first();
      this.Enrollnow=page.locator("//a[@class='btn btn-primary btn-sm']");
      this.cardcontainer = page.locator('.pricing-card:visible');
+     this.pricingtitle=page.locator("")
 
   }
 async goto()
@@ -19,11 +20,25 @@ async goto()
 async validateupcomingbatch()
 {
       await this.onlinetrainings.click();
-      await this.UpcomingBatchlink.click();
-      await this.Enrollnow.scrollIntoViewIfNeeded();
-      await this.Enrollnow.click();
-      await expect(this.cardcontainer).toHaveCount(2);
-      await expect(this.cardcontainer.first()).toBeVisible();
+
+await this.UpcomingBatchlink.click();
+
+await this.Enrollnow.scrollIntoViewIfNeeded();
+
+await this.Enrollnow.click();
+
+await this.page.waitForLoadState('networkidle');
+
+this.cardcontainer = this.page.locator('.pricing-card:visible');
+
+await expect(this.cardcontainer).toHaveCount(2);
+
+await expect(this.cardcontainer.first()).toBeVisible();
+
+await expect(this.cardcontainer.nth(0)).toContainText('International');
+
+await expect(this.cardcontainer.nth(1)).toContainText('India');
+  
 }
 
 }
