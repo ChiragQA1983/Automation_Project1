@@ -10,6 +10,11 @@ export default class Getbyrole
      this.checkbox=page.getByRole('checkbox',{name:'Accept terms'});    
      this.textbox=page.getByRole('textbox',{name:'Username:'})
      this.labeltext=page.getByLabel('Username:');
+     //this.getbyrolelink=page.getByRole('link',{name:'Home'});
+     this.Linktext=page.getByRole('link', { name: 'Home' }).nth(0);
+     //this.alertmsg=page.getByRole('alert',{name:"This is an important alert message!"});
+     this.alertmsg = page.getByRole('alert');
+
    }
  
    async goto()
@@ -38,6 +43,11 @@ export default class Getbyrole
 
     await expect(this.labeltext).toBeVisible();
 
+    //await expect (this.getbyrolelink).toBeVisible();
+    await expect(this.Linktext).toBeVisible();
+    await expect(this.Linktext).toHaveText('Home');
 
+    await expect(this.alertmsg)
+    .toContainText('This is an important alert message!');
    }
 }
