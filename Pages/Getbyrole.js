@@ -9,6 +9,7 @@ export default class Getbyrole
      this.togglebutton=page.getByRole('Button',{name:"Toggle Button"});
      this.checkbox=page.getByRole('checkbox',{name:'Accept terms'});    
      this.textbox=page.getByRole('textbox',{name:'Username:'})
+     this.labeltext=page.getByLabel('Username:');
    }
  
    async goto()
@@ -34,6 +35,9 @@ export default class Getbyrole
     //Textbox
     await this.textbox.fill("Chirag Bhatt");
     await expect(this.textbox).toBeVisible();
-    
+
+    await expect(this.labeltext).toBeVisible();
+
+
    }
 }
