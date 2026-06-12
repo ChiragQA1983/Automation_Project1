@@ -24,21 +24,14 @@ export default class Getbytitle
     async validatetitles()
 {
     await expect(this.Home).toBeVisible();
-    await expect(this.Home)
-        .toHaveAttribute('title', 'Home page link');
+    await expect(this.Home).toHaveAttribute('title','Home page link');
+      
 
     await expect(this.HTML).toBeVisible();
-    await expect(this.HTML)
-        .toHaveAttribute(
-            'title',
-            'HyperText Markup Language'
-        );
-
+    await expect(this.HTML).toHaveAttribute('title','HyperText Markup Language');
+        
     await expect(this.Tooltip).toBeVisible();
-    await expect(this.Tooltip)
-        .toHaveAttribute(
-            'title',
-            'Tooltip text'
-        );
+    await expect(this.Tooltip).toHaveAttribute('title','Tooltip text');
+            
 }
     }
