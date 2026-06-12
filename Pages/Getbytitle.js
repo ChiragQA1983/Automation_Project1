@@ -12,6 +12,8 @@ export default class Getbytitle
     this.HTML = page.getByTitle('HyperText Markup Language');
 
     this.Tooltip = page.getByTitle('Tooltip text');
+
+    this.Save=page.getByTitle('Click to save your changes');
     }
 
     async goto()
@@ -32,6 +34,9 @@ export default class Getbytitle
         
     await expect(this.Tooltip).toBeVisible();
     await expect(this.Tooltip).toHaveAttribute('title','Tooltip text');
+
+    await expect(this.Save).toBeVisible();
+    await expect(this.Save).toHaveAttribute('title','Click to save your changes');
             
 }
     }
