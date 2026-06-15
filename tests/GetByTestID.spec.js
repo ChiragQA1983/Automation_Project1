@@ -1,13 +1,23 @@
-import{test} from '@playwright/test'
+import { test } from '@playwright/test';
+import GetByTestID from '../Pages/GetByTestID';
 
-import GetByTestID from '../Pages/GetByTestID'
+test.describe('GetByTestID Locator Validation', () =>
+{
+    test('Validate Profile, Products and Navigation Links', async ({ page }) =>
+    {
+        // Create Page Object
+        const testIDPage = new GetByTestID(page);
 
-test("Validate the TestID", async({page})=>{
+        // Launch Application
+        await testIDPage.goto();
 
-const getbytestid=new GetByTestID(page);
+        // Validate Profile Section
+        await testIDPage.validateProfileSection();
 
-await getbytestid.goto();
-await getbytestid.ValidatebyTestID();
+        // Validate Products Section
+        await testIDPage.validateProducts();
 
-
-})
+        // Validate Navigation Links
+        await testIDPage.validateNavigationLinks();
+    });
+});
