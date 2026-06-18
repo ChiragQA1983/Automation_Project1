@@ -1,6 +1,6 @@
 import{test} from '@playwright/test';
 
-import CourseContentPrint from '../../Pages/CourseContentPrint';
+import CourseContentPrint from '../Pages/CourseContentPrint';
 
 
 test("Validate the CourseContent", async({page})=>{

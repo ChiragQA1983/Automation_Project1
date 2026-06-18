@@ -1,6 +1,6 @@
 import{test} from '@playwright/test';
 
-import Coursenamecount from '../../Pages/Coursenamecount';
+import Coursenamecount from '../Pages/Coursenamecount';
 
 test("Print the course name count", async({page})=>{
 

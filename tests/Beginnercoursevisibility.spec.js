@@ -1,6 +1,6 @@
 import{test} from '@playwright/test';
 
-import Beginnercoursevisibility from '../../Pages/Beginnercoursevisibility';
+import Beginnercoursevisibility from '../Pages/Beginnercoursevisibility';
 
 
 test("Validation of begginercourse", async({page})=>{

@@ -1,6 +1,6 @@
 import{test} from '@playwright/test';
 
-import Getbyrole from '../../Pages/Getbyrole';
+import Getbyrole from '../Pages/Getbyrole';
 
 test("Validate the GetByRole", async({page})=>{
 

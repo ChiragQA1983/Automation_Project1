@@ -1,6 +1,6 @@
 import{test} from '@playwright/test';
 
-import GetbyLabel from '../../Pages/GetbyLabel';
+import GetbyLabel from '../Pages/GetbyLabel';
 
 
 test("Validation of Label", async({page})=>{

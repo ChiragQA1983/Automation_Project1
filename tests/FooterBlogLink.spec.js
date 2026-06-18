@@ -1,6 +1,6 @@
 import{test} from '@playwright/test';
 
-import FooterBlogLink from '../../Pages/FooterBlogLink';
+import FooterBlogLink from '../Pages/FooterBlogLink';
 
 test("Validation of FooterBlogLink", async({page})=>{
 

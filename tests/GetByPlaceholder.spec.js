@@ -1,6 +1,6 @@
 import{test} from '@playwright/test';
 
-import GetByPlaceholder from '../../Pages/GetByPlaceholder';
+import GetByPlaceholder from '../Pages/GetByPlaceholder';
 
 test("Validation of Placeholder", async({page})=>{
 

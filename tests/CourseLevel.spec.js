@@ -1,6 +1,6 @@
 import{test} from '@playwright/test';
 
-import CourseLevel from '../../Pages/CourseLevel';
+import CourseLevel from '../Pages/CourseLevel';
 
 test("CourseLevel Validation", async({page})=>{
 

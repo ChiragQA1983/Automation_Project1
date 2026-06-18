@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import BeginnerFilter from '../../Pages/BeginnerFilter';
+import BeginnerFilter from '../Pages/BeginnerFilter';
 
 test(
     'Validation of Java Course',
