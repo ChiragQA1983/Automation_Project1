@@ -1,7 +1,7 @@
 import{test} from '@playwright/test';
 
 
-import Tablecount from '../../Pages/Tablecount';
+import Tablecount from '../Pages/Tablecount';
 
 
 test("Print table id number fifth", async({page})=>{
