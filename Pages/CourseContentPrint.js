@@ -37,5 +37,12 @@ export default class CourseContentPrint
     console.log('Total Beginner Course is', BeginnerCount);
     expect(BeginnerCount).toBeGreaterThan(0);
 
+   // await expect(BeginnerCount).toHaveCount(5)
+
+    // It will print the total beginner count
+   console.log('Total Beginner Course is', BeginnerCount);
+
+   await expect(BeginnerCount).toBe(5);
+
  }
 }
