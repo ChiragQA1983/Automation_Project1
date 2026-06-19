@@ -28,6 +28,7 @@ export default class PythonEnrollment
     async applyFilters()
     {
         await this.pythonRadio.check();
+        await this.page.waitForTimeout(3000);
 
         if(await this.intermediateCheckbox.isChecked())
         {
@@ -39,20 +40,10 @@ export default class PythonEnrollment
             await this.advancedCheckbox.uncheck();
         }
 
-        console.log(
-            "Python Checked:",
-            await this.pythonRadio.isChecked()
-        );
-
-        console.log(
-            "Intermediate Checked:",
-            await this.intermediateCheckbox.isChecked()
-        );
-
-        console.log(
-            "Advanced Checked:",
-            await this.advancedCheckbox.isChecked()
-        );
+        console.log( "Python Checked:", await this.pythonRadio.isChecked());
+        console.log("Intermediate Checked:", await this.intermediateCheckbox.isChecked());
+        console.log("Advanced Checked:", await this.advancedCheckbox.isChecked());
+        await this.page.waitForTimeout(3000);
     }
 
     async validateFilteredCourses()
@@ -90,5 +81,7 @@ export default class PythonEnrollment
         }
         console.log("Total Matching Rows:", matchingRows);
         expect(matchingRows).toBeGreaterThan(0);
+       await this.page.waitForTimeout(3000);
+
     }
 }
