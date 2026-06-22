@@ -6,16 +6,35 @@ export default class PythonEnrollment
     {
         this.page = page;
 
-        // Filters
-        this.pythonRadio = page.locator("//input[@value='Python']");
-        this.beginnerCheckbox = page.locator("//input[@value='Beginner']");
-        this.intermediateCheckbox = page.locator("//input[@value='Intermediate']");
-        this.advancedCheckbox = page.locator("//input[@value='Advanced']");
+        // Language Filters
+        this.pythonRadio =
+            page.locator("//input[@value='Python']");
 
-        // Table Columns
-        this.languageCells = page.locator("//table[@id='courses_table']//tbody//td[3]");
-        this.levelCells = page.locator("//table[@id='courses_table']//tbody//td[4]");
-        this.enrollmentCells = page.locator("//table[@id='courses_table']//tbody//td[5]");
+        // Level Filters
+        this.beginnerCheckbox =
+            page.locator("//input[@value='Beginner']");
+
+        this.intermediateCheckbox =
+            page.locator("//input[@value='Intermediate']");
+
+        this.advancedCheckbox =
+            page.locator("//input[@value='Advanced']");
+
+        // Enrollment Dropdown
+        this.minEnrollmentDropdown =
+            page.locator("#enrollDropdown");
+
+        this.tenThousandOption =
+            page.locator("//li[@data-value='10000']");
+
+        this.selectedEnrollmentValue =
+            page.locator("#enrollDropdown .dropdown-label");
+
+        // Visible rows only
+        //this.visibleRows =
+           // page.locator("//table[@id='courses_table']//tbody//tr:visible");
+
+           this.visibleRows =page.locator("//table[@id='courses_table']//tbody//tr");
     }
 
     async goto()
@@ -27,61 +46,112 @@ export default class PythonEnrollment
 
     async applyFilters()
     {
+        // Select Python
         await this.pythonRadio.check();
-        await this.page.waitForTimeout(3000);
 
+        // Keep Beginner checked
+        await expect(
+            this.beginnerCheckbox
+        ).toBeChecked();
+
+        // Uncheck Intermediate
         if(await this.intermediateCheckbox.isChecked())
         {
             await this.intermediateCheckbox.uncheck();
         }
 
+        // Uncheck Advanced
         if(await this.advancedCheckbox.isChecked())
         {
             await this.advancedCheckbox.uncheck();
         }
 
-        console.log( "Python Checked:", await this.pythonRadio.isChecked());
-        console.log("Intermediate Checked:", await this.intermediateCheckbox.isChecked());
-        console.log("Advanced Checked:", await this.advancedCheckbox.isChecked());
+        // Open Enrollment Dropdown
+        await this.minEnrollmentDropdown.click();
+
+        // Select 10,000+
+        await this.tenThousandOption.click();
+
+        // Validate selected value
+        await expect(
+            this.selectedEnrollmentValue
+        ).toContainText("10,000+");
+
+        console.log("Enrollment Filter Applied: 10,000+");
+
+        // Hold for visual verification
         await this.page.waitForTimeout(3000);
     }
 
     async validateFilteredCourses()
+{
+    // Wait until table refresh completes
+    await this.page.waitForTimeout(2000);
+
+    const rows =
+        this.page.locator(
+            "//table[@id='courses_table']//tbody/tr"
+        );
+
+    const rowCount =
+        await rows.count();
+
+    console.log(
+        "Total Rows Found:",
+        rowCount
+    );
+
+    let matchingRows = 0;
+
+    for(let i = 0; i < rowCount; i++)
     {
-        const rowCount = await this.languageCells.count();
-        console.log("Total Rows:", rowCount);
+        const row = rows.nth(i);
 
-        let matchingRows = 0;
-
-        for(let i = 0; i < rowCount; i++)
+        // Skip hidden rows
+        if(!(await row.isVisible()))
         {
-            const language = (await this.languageCells.nth(i).textContent())?.trim();
+            continue;
+        }
 
-            const level = (await this.levelCells.nth(i).textContent())?.trim();
+        const language =
+            (await row.locator("td").nth(2)
+                .textContent())?.trim();
 
-            const enrollmentText = (await this.enrollmentCells.nth(i).textContent())?.trim();
+        const level =
+            (await row.locator("td").nth(3)
+                .textContent())?.trim();
 
-            const enrollment = parseInt(enrollmentText.replace(/,/g, ''));
+        const enrollmentText =
+            (await row.locator("td").nth(4)
+                .textContent())?.trim();
 
-            console.log(
-                `Row ${i + 1}: ${language} | ${level} | ${enrollment}`
+        const enrollment =
+            parseInt(
+                enrollmentText.replace(/,/g, '')
             );
 
-            if(
-                language === "Python" &&
-                level === "Beginner" &&
-                enrollment >= 10000
-            )
-            {
-                matchingRows++;
+        console.log(
+            `Visible Row ${i + 1}: ${language} | ${level} | ${enrollment}`
+        );
 
-                console.log(`Matched Row ${i + 1}`
-                );
-            }
-        }
-        console.log("Total Matching Rows:", matchingRows);
-        expect(matchingRows).toBeGreaterThan(0);
-       await this.page.waitForTimeout(3000);
+        expect(language)
+            .toBe("Python");
 
+        expect(level)
+            .toBe("Beginner");
+
+        expect(enrollment)
+            .toBeGreaterThanOrEqual(10000);
+
+        matchingRows++;
     }
+
+    console.log(
+        "Matching Rows:",
+        matchingRows
+    );
+
+    expect(matchingRows)
+        .toBeGreaterThan(0);
+}
 }
