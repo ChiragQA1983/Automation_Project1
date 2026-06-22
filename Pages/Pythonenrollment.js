@@ -39,9 +39,7 @@ export default class PythonEnrollment
 
     async goto()
     {
-        await this.page.goto(
-            "https://practicetestautomation.com/practice-test-table/"
-        );
+        await this.page.goto("https://practicetestautomation.com/practice-test-table/");
     }
 
     async applyFilters()
