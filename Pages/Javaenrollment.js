@@ -166,7 +166,7 @@ export default class JavaEnrollment
             enrollment
         );
 
-        // Intentionally checking Python
+        // Intentionally checking Java
         expect(language)
             .toBe("Java");
 
