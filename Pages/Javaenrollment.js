@@ -31,8 +31,7 @@ export default class JavaEnrollment
             page.locator("#enrollDropdown .dropdown-label");
 
         // Table Rows
-        this.tableRows =
-            page.locator("//table[@id='courses_table']//tbody/tr");
+        this.visibleRows  =page.locator("//table[@id='courses_table']//tbody//tr");
     }
 
     async goto()
@@ -96,8 +95,16 @@ export default class JavaEnrollment
 
     async validateFilteredCourses()
 {
+    // Wait until table refresh completes
+    await this.page.waitForTimeout(2000);
+
+    const rows =
+        this.page.locator(
+            "//table[@id='courses_table']//tbody/tr"
+        );
+
     const rowCount =
-        await this.tableRows.count();
+        await rows.count();
 
     console.log(
         "Total Rows Found:",
@@ -108,37 +115,24 @@ export default class JavaEnrollment
 
     for(let i = 0; i < rowCount; i++)
     {
-        const row =
-            this.tableRows.nth(i);
+        const row = rows.nth(i);
 
-        const visible =
-            await row.isVisible();
-
-        console.log(
-            `Row ${i + 1} Visible = ${visible}`
-        );
-
-        if(!visible)
+        // Skip hidden rows
+        if(!(await row.isVisible()))
         {
             continue;
         }
 
         const language =
-            (await row
-                .locator("td")
-                .nth(2)
+            (await row.locator("td").nth(2)
                 .textContent())?.trim();
 
         const level =
-            (await row
-                .locator("td")
-                .nth(3)
+            (await row.locator("td").nth(3)
                 .textContent())?.trim();
 
         const enrollmentText =
-            (await row
-                .locator("td")
-                .nth(4)
+            (await row.locator("td").nth(4)
                 .textContent())?.trim();
 
         const enrollment =
@@ -150,23 +144,6 @@ export default class JavaEnrollment
             `Visible Row ${i + 1}: ${language} | ${level} | ${enrollment}`
         );
 
-        // Debug values
-        console.log(
-            "Language Value =",
-            language
-        );
-
-        console.log(
-            "Level Value =",
-            level
-        );
-
-        console.log(
-            "Enrollment Value =",
-            enrollment
-        );
-
-        // Intentionally checking Java
         expect(language)
             .toBe("Java");
 
