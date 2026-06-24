@@ -92,76 +92,109 @@ export default class JavaEnrollment
         // Visual verification
         await this.page.waitForTimeout(3000);
     }
-
     async validateFilteredCourses()
 {
-    // Wait until table refresh completes
+    // Step 1 -> Wait for table to refresh after applying filters
     await this.page.waitForTimeout(2000);
 
-    const rows =
+    // Step 2 -> Locate all table rows
+    const row =
         this.page.locator(
-            "//table[@id='courses_table']//tbody/tr"
+            "//table[@id='courses_table']//tbody//tr"
         );
 
-    const rowCount =
-        await rows.count();
+    // Step 3 -> Count total rows
+    const rowcount =
+        await row.count();
 
     console.log(
-        "Total Rows Found:",
-        rowCount
+        "Total row count:",
+        rowcount
     );
 
-    let matchingRows = 0;
+    // Step 4 -> Variable to count matching rows
+    let matchingrow = 0;
 
-    for(let i = 0; i < rowCount; i++)
+    // Step 5 -> Loop through each row
+    for(let i = 0; i < rowcount; i++)
     {
-        const row = rows.nth(i);
+        // Step 6 -> Get current row using index
+        const rows =
+            row.nth(i);
 
-        // Skip hidden rows
-        if(!(await row.isVisible()))
+        // Step 7 -> Skip hidden rows
+        if(!(await rows.isVisible()))
         {
             continue;
         }
 
+        // Step 8 -> Read Language column value
         const language =
-            (await row.locator("td").nth(2)
+            (await rows
+                .locator("td")
+                .nth(2)
                 .textContent())?.trim();
 
+        // Step 9 -> Read Level column value
         const level =
-            (await row.locator("td").nth(3)
+            (await rows
+                .locator("td")
+                .nth(3)
                 .textContent())?.trim();
 
-        const enrollmentText =
-            (await row.locator("td").nth(4)
+        // Step 10 -> Read Enrollment column value
+        const enrollmenttext =
+            (await rows
+                .locator("td")
+                .nth(4)
                 .textContent())?.trim();
 
+        // Step 11 -> Convert Enrollment text into number
         const enrollment =
             parseInt(
-                enrollmentText.replace(/,/g, '')
+                enrollmenttext.replace(/,/g,'')
             );
 
+        // Step 12 -> Print visible row data
         console.log(
-            `Visible Row ${i + 1}: ${language} | ${level} | ${enrollment}`
+            `Visible Row ${i + 1} | ${language} | ${level} | ${enrollment}`
         );
 
+        // Step 13 -> Validate Language
         expect(language)
             .toBe("Java");
 
+        // Step 14 -> Validate Level
         expect(level)
             .toBe("Beginner");
 
+        // Step 15 -> Validate Enrollment >= 10000
         expect(enrollment)
             .toBeGreaterThanOrEqual(10000);
 
-        matchingRows++;
+        // Step 16 -> Increase matching row count
+        matchingrow++;
     }
 
+    // Step 17 -> Print total matching rows
     console.log(
         "Matching Rows:",
-        matchingRows
+        matchingrow
     );
 
-    expect(matchingRows)
+    // Step 18 -> Verify at least one matching row exists
+    expect(matchingrow)
         .toBeGreaterThan(0);
 }
 }
+
+/*
+1. Locate all rows
+2. Count rows
+3. Loop through rows
+4. Ignore hidden rows
+5. Read Language, Level and Enrollment
+6. Validate values
+7. Increase matching count
+8. Verify at least one matching row found
+*/
