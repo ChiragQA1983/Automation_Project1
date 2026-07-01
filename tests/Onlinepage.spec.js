@@ -1,13 +1,12 @@
-import{test} from '@playwright/test';
+import { test } from "@playwright/test";
 
-import Onlinepage from '../Pages/Onlinepage';
+import Onlinepage from "../Pages/Onlinepage";
 
-test("Validate the online courses", async({page})=>{
+test("Validate Online Training Courses", async ({ page }) =>
+{
+    const onlinepage = new Onlinepage(page);
 
-const onlinepage=new Onlinepage(page);
+    await onlinepage.goto();
 
-await onlinepage.goto();
-
-await onlinepage.Onelinetrainingvalidation();
-
-})
+    await onlinepage.OnlineTrainingValidation();
+});
