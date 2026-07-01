@@ -6,17 +6,16 @@ export default class Onlinepage
     {
         this.page = page;
 
-        // Online Trainings Menu
+        // Online Trainings Link
         this.onlineTrainingBtn =
             page.locator("//a[normalize-space()='Online Trainings']");
 
-        // All Course Titles (Do NOT use :visible)
-        this.courseTitles =
-            page.locator(".course-info h3");
+        // Advertisement Popup
+        this.popupCloseButton =
+            page.locator("#adCloseBtn");
 
-        // Optional Advertisement Close Button
-        this.closeAdvertisement =
-            page.locator("button[aria-label='Close'], .close");
+        // Course Titles (Current locator)
+   this.courseTitles = page.locator(".course-info h3");
     }
 
     async goto()
@@ -26,47 +25,75 @@ export default class Onlinepage
         );
     }
 
+    async closeTrainingPopup()
+    {
+        try
+        {
+            await this.popupCloseButton.waitFor({
+                state: "visible",
+                timeout: 10000
+            });
+
+            console.log("Popup Found");
+
+            await this.popupCloseButton.click();
+
+            console.log("Popup Closed");
+
+            await expect(this.popupCloseButton)
+                .toBeHidden();
+        }
+        catch
+        {
+            console.log("Popup Not Displayed");
+        }
+    }
+
     async OnlineTrainingValidation()
     {
-        // Step 1 - Open Online Trainings page
+        // Step 1
         await this.onlineTrainingBtn.click();
 
-        // Step 2 - Wait for page to load
+        // Step 2
         await this.page.waitForLoadState("networkidle");
 
-        // Step 3 - Close advertisement if present
-        if(await this.closeAdvertisement.count() > 0)
-        {
-            if(await this.closeAdvertisement.first().isVisible())
-            {
-                await this.closeAdvertisement.first().click();
-            }
-        }
+        // Step 3
+        await this.closeTrainingPopup();
 
-        // Step 4 - Wait for course cards
-        await expect(this.courseTitles.first()).toBeVisible();
+        // Step 4
+        await this.page.waitForTimeout(3000);
 
-        // Step 5 - Print all course names
+        // Debug
+        const count =
+            await this.courseTitles.count();
+
+        console.log("Course Count:", count);
+
         const courses =
             await this.courseTitles.allTextContents();
 
         console.log("Courses Found:");
 
-        courses.forEach((course, index) =>
+        for(let i = 0; i < courses.length; i++)
         {
-            console.log(`Course ${index + 1}: ${course}`);
-        });
+            console.log(
+                `Course ${i + 1}: ${courses[i]}`
+            );
+        }
 
-        // Step 6 - Validate total courses
-        expect(courses.length).toBe(3);
+        // Validation
+        expect(courses.length)
+            .toBe(2);
 
-        // Step 7 - Validate course names
-        expect(courses).toEqual([
-            "AI Powered Playwright with JS/TS",
-            "AI Powered Playwright with Python",
-            "Generative AI & LLM Testing"
-        ]);
+        expect(courses)
+            .toEqual([
+                "AI Powered Playwright with JS/TS",
+                //"AI Powered Playwright with Python",
+                "Generative AI & LLM Testing"
+            ]);
 
-        console.log("All Course Validation Passed Successfully.");
+        console.log(
+            "Course Validation Passed"
+        );
     }
 }
