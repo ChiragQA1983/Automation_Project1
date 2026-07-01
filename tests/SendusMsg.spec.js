@@ -23,6 +23,7 @@ for(const data of testData)
     // Click Online Trainings
     await sendmsg.ClickOnlineTraining();
 
+    await sendmsg.closeAdvertisementIfPresent();
     // Validate Redirected URL
     await sendmsg.ValidateURL();
 

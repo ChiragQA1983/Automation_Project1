@@ -24,8 +24,16 @@ this.page = page;
     this.YourMessage = page.locator("#message");
 
     this.submit = page.locator(
-        "//button[@type='submit']"
-    );
+        "//button[@type='submit']");
+
+
+        // Advertisement Popup
+    this.adPopup = page.locator("#adModal");
+
+    this.adCloseBtn = page.locator("#adCloseBtn");
+
+
+    
 }
 
 async goto()
@@ -34,6 +42,28 @@ async goto()
         "https://testautomationpractice.blogspot.com/"
     );
 }
+
+async closeAdvertisementIfPresent()
+{
+    try
+    {
+        if(await this.adPopup.isVisible({ timeout: 3000 }))
+        {
+            console.log("Advertisement Popup Found");
+
+            await this.adCloseBtn.click();
+
+            await expect(this.adPopup).toBeHidden();
+
+            console.log("Advertisement Popup Closed");
+        }
+    }
+    catch
+    {
+        console.log("Advertisement Popup Not Displayed");
+    }
+}
+
 
 async ClickOnlineTraining()
 {
@@ -75,8 +105,13 @@ async FillSendMessageForm(name,email,phone,course,message)
 
 async ClickSendMessage()
 {
+    // Scroll to button
     await this.submit.scrollIntoViewIfNeeded();
 
+    // Close popup if it appears
+    await this.closeAdvertisementIfPresent();
+
+    // Click Send Message
     await this.submit.click();
 }
 
