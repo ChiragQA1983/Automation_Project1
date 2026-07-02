@@ -1,61 +1,75 @@
 import { test, expect } from '@playwright/test';
 
 import SendusMsg from '../Pages/SendusMsg';
-
 import ExcelUtils from '../Pages/ExcelUtils';
 
 test('Validate Send Message Form using Excel Data', async ({ page }) =>
 {
-const sendmsg = new SendusMsg(page);
+    test.setTimeout(120000);
 
+    const sendmsg = new SendusMsg(page);
 
-// Read Excel Data
-const testData = ExcelUtils.getTestData(
-    './tests/testdata/TestData.xlsx',
-    'Sheet2'
-);
+    // Read Excel Data
+    const testData = ExcelUtils.getTestData(
+        './tests/testdata/TestData.xlsx',
+        'Sheet2'
+    );
 
-for(const data of testData)
-{
-    // Open Website
+    console.log("Total Excel Records:", testData.length);
+
+    // Open Application ONLY ONCE
     await sendmsg.goto();
 
-    // Click Online Trainings
+    // Navigate ONLY ONCE
     await sendmsg.ClickOnlineTraining();
 
     await sendmsg.closeAdvertisementIfPresent();
-    // Validate Redirected URL
+
     await sendmsg.ValidateURL();
 
-    // Handle Alert Popup
-    page.once('dialog', async dialog =>
-    {
-        console.log(dialog.message());
+    let rowNumber = 1;
 
-        await expect(dialog.message()).toContain(
-            'Thank you for your message!'
+    for(const data of testData)
+    {
+        console.log("======================================");
+        console.log(`Executing Excel Row : ${rowNumber}`);
+        console.log(`Name   : ${data['Full Name']}`);
+        console.log(`Email  : ${data['Email Address']}`);
+        console.log(`Course : ${data['Interested Course']}`);
+        console.log("======================================");
+
+        page.once('dialog', async dialog =>
+        {
+            console.log("Alert Message:", dialog.message());
+
+            await expect(dialog.message()).toContain(
+                "Thank you for your message!"
+            );
+
+            await dialog.accept();
+        });
+
+        await sendmsg.FillSendMessageForm(
+            data['Full Name'],
+            data['Email Address'],
+            data['Phone Number'].toString(),
+            data['Interested Course'],
+            data['Your Message']
         );
 
-        await dialog.accept();
-    });
+        await sendmsg.closeAdvertisementIfPresent();
 
-    // Fill Form
-    await sendmsg.FillSendMessageForm(
+        await sendmsg.ClickSendMessage();
 
-        data['Full Name'],
+        console.log(`Row ${rowNumber} Submitted Successfully`);
 
-        data['Email Address'],
+        rowNumber++;
 
-        data['Phone Number'].toString(),
+        // Hold for visual verification
+        await page.waitForTimeout(2000);
+    }
 
-        data['Interested Course'],
-
-        data['Your Message']
-    );
-
-    // Submit Form
-    await sendmsg.ClickSendMessage();
-}
-
-
+    console.log("======================================");
+    console.log("All Excel Records Executed Successfully");
+    console.log("======================================");
 });
