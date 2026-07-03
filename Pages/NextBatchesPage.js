@@ -8,6 +8,10 @@ export default class NextBatchesPage
     this.onelinetrainingbtn = page.locator("//a[normalize-space()='Online Trainings']");
     this.nexpage=page.locator("//a[normalize-space()='Next Batches']");
     this.nextbatch=page.locator("//span[normalize-space()='Upcoming Batches']");
+    
+        // Advertisement
+        this.adPopup = page.locator("#adModal");
+        this.adCloseBtn = page.locator("#adCloseBtn");
    }
 async goto()
 {
@@ -22,4 +26,25 @@ async nextbatchesvalidation()
     await expect(this.nextbatch).toContainText(/Upcoming Batches/i);
 
 }
+async closeAdvertisementIfPresent()
+    {
+        try
+        {
+            if(await this.adPopup.isVisible({ timeout: 3000 }))
+            {
+                console.log("Advertisement Popup Found");
+
+                await this.adCloseBtn.click();
+
+                await expect(this.adPopup).toBeHidden();
+
+                console.log("Advertisement Popup Closed");
+            }
+        }
+        catch
+        {
+            console.log("Advertisement Popup Not Displayed");
+        }
+    }
+
 }

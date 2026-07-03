@@ -6,5 +6,7 @@ test("Validate nextbatches", async({page})=>{
 
     const nextbatchpage=new NextBatchesPage(page);
     await nextbatchpage.goto();
+    await nextbatchpage.closeAdvertisementIfPresent();
     await nextbatchpage.nextbatchesvalidation();
+
 })
