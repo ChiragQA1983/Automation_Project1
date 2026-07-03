@@ -8,7 +8,7 @@ export default class SvgPage
 
         // SVG Elements
         this.redCircle = page.locator('svg circle');
-        this.greenRectangle = page.locator('svg rect');
+        this.greenRectangle = page.locator("//*[name()='rect' and contains(@x,'3')]");
         this.blueTriangle = page.locator('svg polygon');
     }
 
