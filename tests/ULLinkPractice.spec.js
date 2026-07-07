@@ -9,5 +9,6 @@ const ullinks=new ULLinkPractice(page);
 await ullinks.goto();
 
 await ullinks.courseullinksvalidation();
+await ullinks.newtaburlvalidation();
 
 })
