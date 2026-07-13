@@ -65,9 +65,7 @@ export default class PriceSortingLowtoHigh
         // Step 1 -> Select Price Low to High
         await this.sortDropdown.selectOption("lohi");
 
-        console.log(
-            "Selected: Price Low to High"
-        );
+        console.log("Selected: Price Low to High");
 
 
         // Step 2 -> Create empty array
@@ -75,13 +73,9 @@ export default class PriceSortingLowtoHigh
 
 
         // Step 3 -> Count total price elements
-        const priceCount =
-            await this.productPrices.count();
+        const priceCount = await this.productPrices.count();
 
-        console.log(
-            "Total Products:",
-            priceCount
-        );
+        console.log( "Total Products:", priceCount);
 
 
         // Step 4 -> Loop through all prices
@@ -89,19 +83,13 @@ export default class PriceSortingLowtoHigh
         {
             // Step 5 -> Read price text
 
-            const priceText =
-                await this.productPrices
-                    .nth(i)
-                    .textContent();
+const priceText = await this.productPrices.nth(i).textContent();
 
 
             // Step 6 -> Remove $ sign
             // and convert string to number
 
-            const price =
-                parseFloat(
-                    priceText.replace("$", "")
-                );
+const price = parseFloat(priceText.replace("$", ""));
 
 
             // Step 7 -> Add price into array
@@ -111,44 +99,31 @@ export default class PriceSortingLowtoHigh
 
             // Step 8 -> Print each price
 
-            console.log(
-                `Product ${i + 1}: $${price}`
-            );
+            console.log(`Product ${i + 1}: $${price}`);
         }
 
 
         // Step 9 -> Print actual UI order
 
-        console.log(
-            "Actual Low to High Order:",
-            actualPrices
-        );
+        console.log("Actual Low to High Order:",actualPrices);
 
 
         // Step 10 -> Create expected sorted copy
 
-        const expectedPrices =
-            [...actualPrices]
-                .sort((a, b) => a - b);
+        const expectedPrices =[...actualPrices].sort((a, b) => a - b);
 
 
         // Step 11 -> Print expected order
 
-        console.log(
-            "Expected Low to High Order:",
-            expectedPrices
-        );
+        console.log("Expected Low to High Order:", expectedPrices);
 
 
         // Step 12 -> Compare arrays
 
-        expect(actualPrices)
-            .toEqual(expectedPrices);
+        expect(actualPrices).toEqual(expectedPrices);
 
 
-        console.log(
-            "Low to High Sorting Validation Passed"
-        );
+        console.log("Low to High Sorting Validation Passed");
     }
 
 }
