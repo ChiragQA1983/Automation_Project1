@@ -2,7 +2,7 @@ import { test } from '@playwright/test';
 
 import DynamicWebtable from '../pages/DynamicWebtable';
 
-test('Validate Dynamic Web Table', async ({ page }) =>
+test('DynamicWebtable', async ({ page }) =>
 {
     const table = new DynamicWebtable(page);
 

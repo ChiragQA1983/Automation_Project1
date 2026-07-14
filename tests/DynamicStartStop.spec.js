@@ -2,7 +2,7 @@ import{test} from '@playwright/test';
 
 import DynamicStartStopPage from '../Pages/DynamicStartStopPage';
 
-test('Validation of Dynamic Button', async({page})=>
+test('DynamicStartStop Button', async({page})=>
 {
    
     const dynamicstartstoppage=new DynamicStartStopPage(page)

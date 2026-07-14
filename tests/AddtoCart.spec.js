@@ -3,7 +3,7 @@ import{test} from'@playwright/test';
 
 import AddtoCart from '../Pages/AddtoCart';
 
-test("Validation of Addtocart", async({page})=>{
+test("Addtocart Validation ", async({page})=>{
 
 const addtocart=new AddtoCart(page);
 

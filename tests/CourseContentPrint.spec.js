@@ -3,7 +3,7 @@ import{test} from '@playwright/test';
 import CourseContentPrint from '../Pages/CourseContentPrint';
 
 
-test("Validate the CourseContent", async({page})=>{
+test("CourseContent Validate ", async({page})=>{
 
     const coursecontentprint=new CourseContentPrint(page);
 

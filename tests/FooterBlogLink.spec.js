@@ -2,7 +2,7 @@ import{test} from '@playwright/test';
 
 import FooterBlogLink from '../Pages/FooterBlogLink';
 
-test("Validation of FooterBlogLink", async({page})=>{
+test("FooterBlogLink Validation", async({page})=>{
 
 const footerbloglink=new FooterBlogLink(page);
 
